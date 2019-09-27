@@ -1,0 +1,17 @@
+version: '3'
+services:
+  proxy-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '127.0.0.1:9081:80'
+    environment:
+      - H_EMBED_URL=http://localhost:5000/embed.js
+      - VIA_URL=http://localhost:9080
+    volumes:
+      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./templates:/usr/local/openresty/nginx/html/templates
+      - ./lua:/usr/local/openresty/nginx/lua
+      - ./static:/usr/local/openresty/nginx/static
+
