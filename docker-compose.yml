@@ -3,7 +3,7 @@ services:
   proxy-server:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile-dev
     ports:
       - '127.0.0.1:9081:80'
     environment:
