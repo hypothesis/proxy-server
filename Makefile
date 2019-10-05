@@ -16,5 +16,5 @@ run-docker:
 		--net hypothesis-dev_default \
         -e H_EMBED_URL=http://localhost:5000/embed.js \
         -e VIA_URL=http://localhost:9080 \
-		-p 9081:80 \
+		-p 9081:9081 \
 		hypothesis/proxy-server:$(DOCKER_TAG)
