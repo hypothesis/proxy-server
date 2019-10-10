@@ -1,4 +1,4 @@
-local response = ngx.location.capture(ngx.var.request_uri, { method = ngx.HTTP_HEAD})
+local response = ngx.location.capture("/id_" .. ngx.var.request_uri, { method = ngx.HTTP_HEAD})
 if (response.header["Content-Type"] == nil) then
     ngx.log(ngx.STDERR, "HEAD request for " .. ngx.var.request_uri .. " didn't have Content-Type header.")
     response = ngx.location.capture("/id_" .. ngx.var.request_uri)
