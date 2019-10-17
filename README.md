@@ -17,6 +17,8 @@ content type does not match a pdf it is routed to `localhost:9080/http://example
 The `/pdf/` endpoint responds with the pdf and the hypothesis client embeded in an html page.
 This pdf page also contains a url to the proxied pdf: `localhost:9081/id_/http://example.com/pdf.pdf`
 
+[Nginx + Lua Presentation Slides](https://docs.google.com/presentation/d/17DknFhjNm63XZAvynlMEZHxW1ZrIYZ7jgzdkjd8rr6Y/edit?usp=sharing)
+
 # Getting Started
 Note this is dependent on H, the Client, and Via so those services also need to be running.
 
