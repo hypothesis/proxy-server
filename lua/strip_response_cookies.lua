@@ -1,1 +1,1 @@
-ngx.header.Cookie = ""
+ngx.header['Set-Cookie'] = ""
