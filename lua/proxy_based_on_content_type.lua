@@ -1,6 +1,5 @@
 local http = require "resty.http"
 local httpc = http.new()
---httpc:set_timeout(4000)
 httpc:connect("127.0.0.1", 9081)
 
 function request_content_type_header(method)
@@ -25,9 +24,10 @@ if not success then
     response, err = request_content_type_header("GET")
 end
 
-ngx.log(ngx.STDERR, "Using Content-Type: " .. response.headers["Content-Type"] .. " to direct request")
-if (response.headers["Content-Type"] == "application/pdf" 
-        or response.headers["Content-Type"] == "application/x-pdf") then
+local content_type_header = response.headers["Content-Type"] or "nil"
+ngx.log(ngx.STDERR, "Using Content-Type: " .. content_type_header .. " to direct request")
+if (content_type_header == "application/pdf"
+        or content_type_header == "application/x-pdf") then
     return ngx.exec("/pdf" .. ngx.var.request_uri)
 else
     return ngx.redirect(os.getenv("VIA_URL") .. ngx.var.request_uri, 302)
