@@ -44,6 +44,65 @@ To stop ctrl-C and run:
 docker-compose rm -f proxy-server
 ```
 
+# Making Changes to the openresty-alpine-fat Docker Base Image
+The base docker image for the proxy-server is based on the official 
+openresty alpine fat image with some additional nginx modules. This means 
+that the base image for the proxy-server must be custom built and pushed 
+to Hypothesis's Dockerhub. The Dockerfiles for these base images are 
+located in the dockerfiles directory. Because the base image so rarely 
+needs to be modified this process is not part of the proxy-server release 
+flow.
+
+## Building
+To build the docker image run:
+```
+make openresty-alpine
+```
+This will build two docker images: openresty-alpine-fat and it's dependency
+openresty-alpine. Both these images are tagged with "latest". 
+
+```
+docker images | grep "openresty-alpine"
+
+hypothesis/openresty-alpine-fat   latest   8c3f9d5fdf7c   About 1 min ago   308MB
+hypothesis/openresty-alpine       latest   0c1e272acd66   About 1 min ago   101MB
+```
+
+## Releasing
+In order to release a new version of openresty-alpine-fat two tags of each 
+of the base images must be pushed: the new version tagged with the version 
+number and the one already built for you by the make command tagged with 
+"latest". Note `<version>` should be replaced with the new version number 
+such as 1.0.1. 
+```
+docker tag 8c3f9d5fdf7c hypothesis/openresty-alpine-fat:<version>
+docker tag 0c1e272acd66 hypothesis/openresty-alpine:<version>
+
+docker images | grep "openresty-alpine"
+
+hypothesis/openresty-alpine-fat   1.0.1     8c3f9d5fdf7c  About 1 min ago   308MB
+hypothesis/openresty-alpine-fat   latest    8c3f9d5fdf7c  About 1 min ago   308MB
+hypothesis/openresty-alpine       1.0.1     0c1e272acd66  About 1 min ago   101MB
+hypothesis/openresty-alpine       latest    0c1e272acd66  About 1 min ago   101MB
+```
+
+To push these images to Hypothesis's Dockerhub run:
+```
+docker push hypothesis/openresty-alpine-fat:<version>
+docker push hypothesis/openresty-alpine-fat:latest
+docker push hypothesis/openresty-alpine:<version>
+docker push hypothesis/openresty-alpine:latest
+```
+Note you may need to login to docker using `docker login` before pushing. 
+
+## Running/Testing
+In order to pull these changes into your local dev environment you may need
+ to force a rebuild of the proxy-server docker container by running:
+```
+docker pull hypothesis/openresty-alpine-fat:latest
+docker-compose build proxy-server
+```
+
 # Testing
 For any test that makes use of a /test endpoint you will need to remove the `internal;` from that location block during testing. The `internal;` hides this endpoint from being proxied on production.
 

@@ -1,4 +1,4 @@
-FROM openresty/openresty:alpine-fat
+FROM hypothesis/openresty-alpine-fat:latest
 
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-template
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-http
