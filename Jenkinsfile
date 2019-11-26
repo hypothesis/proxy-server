@@ -13,6 +13,7 @@ node {
     stage('test') {
         try {
             testApp(image: img, runArgs: "-e VIA_URL=http://localhost:9080 -e H_EMBED_URL=http://localhost:5000/embed.js") {
+            sh "make ci-test"
             }
         } finally {
         }

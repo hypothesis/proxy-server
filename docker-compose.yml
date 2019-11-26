@@ -14,4 +14,18 @@ services:
       - ./templates:/usr/local/openresty/nginx/html/templates
       - ./lua:/usr/local/openresty/nginx/lua
       - ./static:/usr/local/openresty/nginx/static
+  proxy-server-test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-dev
+    environment:
+      - H_EMBED_URL=http://localhost:5000/embed.js
+      - VIA_URL=http://localhost:9080
+    volumes:
+      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./templates:/usr/local/openresty/nginx/html/templates
+      - ./lua:/usr/local/openresty/nginx/lua
+      - ./static:/usr/local/openresty/nginx/static
+      - ./tests:/usr/local/openresty/nginx/tests 
+    command: ["busted", "--pattern=test_", "--cpath=/usr/local/openresty/nginx/tests/lua/?.lua;/usr/local/openresty/nginx/tests/lua/utils/?.lua", "/usr/local/openresty/nginx/tests/lua/"]
 
