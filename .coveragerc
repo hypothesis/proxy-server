@@ -1,0 +1,11 @@
+[run]
+branch = True
+parallel = True
+source =
+    proxy_server
+    tests/proxy_server
+
+[report]
+show_missing = True
+precision = 2
+fail_under = 90.38

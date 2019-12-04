@@ -73,7 +73,7 @@ document.addEventListener('webviewerloaded', function(event) {
     // and https://github.com/mozilla/pdf.js/issues/10435#issuecomment-452706770
     app.open({
       // Load PDF through Via to work around CORS restrictions.
-      url: '/id_/' + url,
+      url: url,
 
       // Make sure `PDFViewerApplication.url` returns the original URL, as this
       // is the URL associated with annotations.

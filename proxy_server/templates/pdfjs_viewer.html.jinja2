@@ -38,10 +38,10 @@ See https://github.com/adobe-type-tools/cmap-resources
   Hypothesis client to determine the URL of this page. For consistency with
   the rest of via, however, we serve it with the PDF.js viewer application.
 -#}
-<link rel="canonical" href="{* url *}"/>
+<link rel="canonical" href="{{ url }}"/>
 <script>
-window.VIA_DOCUMENT_URL = "{* url *}";
-window.VIA_H_EMBED_URL = "{* h_embed_url *}";
+window.VIA_DOCUMENT_URL = "{{ url }}";
+window.VIA_H_EMBED_URL = "{{ h_embed_url }}";
 </script>
 
 <script src="/static/scripts/pdfjs-init.js"></script>
@@ -53,13 +53,13 @@ window.VIA_H_EMBED_URL = "{* h_embed_url *}";
       showHighlights: true,
       appType: 'via',
   
-      {% if not (h_request_config == nil) then %}
-      requestConfigFromFrame: '{*h_request_config*}',
-      {% end %}
+      {% if h_request_config %}
+      requestConfigFromFrame: '{{ h_request_config}}',
+      {% endif %}
   
-      {% if not (h_open_sidebar == nil) then %}
+      {% if h_open_sidebar %}
       openSidebar: true,
-      {% end %}
+      {% endif %}
     };
   }
 </script>

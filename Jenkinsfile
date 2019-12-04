@@ -7,14 +7,13 @@ def img
 node {
     stage('build') {
         checkout(scm)
-        img = buildApp(name: 'hypothesis/proxy-server')
+        img = buildApp(name: 'hypothesis/proxy_server')
     }
 
     stage('test') {
-        try {
-            testApp(image: img, runArgs: "-e VIA_URL=http://localhost:9080 -e H_EMBED_URL=http://localhost:5000/embed.js") {
-            }
-        } finally {
+        testApp(image: img, runArgs: '-u root') {
+            sh 'pip install -q tox>=3.8.0'
+            sh 'cd /var/lib/proxy_server && tox -e py36-tests'
         }
     }
 
@@ -28,20 +27,13 @@ node {
 onlyOnMaster {
     milestone()
     stage('qa deploy') {
-        deployApp(image: img, app: 'proxy-server', env: 'qa')
+        deployApp(image: img, app: 'proxy_server', env: 'qa')
     }
-    
+
     milestone()
     stage('prod deploy') {
         input(message: "Deploy to prod?")
         milestone()
-        deployApp(image: img, app: 'proxy-server', env: 'prod')
+        deployApp(image: img, app: 'proxy_server', env: 'prod')
     }
-}
-
-def containerPort(container, port) {
-    return sh(
-        script: "docker port ${container.id} ${port} | cut -d: -f2",
-        returnStdout: true
-    ).trim()
 }

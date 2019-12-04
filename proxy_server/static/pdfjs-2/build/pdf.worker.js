@@ -31416,7 +31416,7 @@ var PartialEvaluator = function PartialEvaluatorClosure() {
           fontID = this.idFactory.createObjId();
         }
 
-        this.fontCache.put("id_".concat(fontID), fontCapability.promise);
+        this.fontCache.put("/proxy/static".concat(fontID), fontCapability.promise);
       }
 
       (0, _util.assert)(fontID, 'The "fontID" must be defined.');
